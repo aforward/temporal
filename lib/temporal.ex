@@ -1,5 +1,5 @@
 defmodule Temporal do
-  @moduledoc """
+  @moduledoc"""
   Documentation for Temporal.
   """
 

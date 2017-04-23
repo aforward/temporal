@@ -16,6 +16,10 @@ defmodule Temporal.Mixfile do
   end
 
   defp deps do
-    []
+    [
+      {:mix_test_watch, github: "aforward/mix-test.watch", only: :dev, runtime: false},
+      {:httpoison, "~> 0.11.1"},
+      {:poison, "~> 3.1.0"},
+    ]
   end
 end
