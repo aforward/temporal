@@ -4,6 +4,23 @@ defmodule Temporal.Api do
   """
 
   @doc """
+  Retrieve data from the interwebs using either :get or :post
+
+  ## Examples
+
+      iex> Temporal.Api.call(:get, %{source: "https://raw.githubusercontent.com/aforward/webfiles/master/x.txt"})
+      {:ok, "A text file\\n"}
+
+      iex> Temporal.Api.call(:post, %{source: "https://raw.githubusercontent.com/aforward/webfiles/master/x.txt"})
+      {:error, "Expected a 200, received 400"}
+  """
+  def call(:get, %{source: source, headers: headers}), do: get(source, headers)
+  def call(:get, %{source: source}), do: get(source)
+  def call(:post, %{source: source, body: body, headers: headers}), do: post(source, body, headers)
+  def call(:post, %{source: source, body: body}), do: post(source, body)
+  def call(:post, %{source: source}), do: post(source)
+
+  @doc """
   Download a particular file using GET.  Optionally provide any required headers
 
   ## Examples

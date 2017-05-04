@@ -22,11 +22,19 @@ defmodule Temporal.Storage do
     save(response, path(basedir, frequency, source))
   end
   def save({:ok, body}, path) do
-    path |> Path.dirname |> File.mkdir_p!
+    mkdir(path)
     :ok = File.write!(path, body)
     {:ok, path}
   end
   def save(err, _path), do: err
+
+  @doc"""
+  Ensure the directory is available for saving
+  """
+  def mkdir(filename) do
+    filename |> Path.dirname |> File.mkdir_p
+    filename
+  end
 
   @doc"""
   Retrieve data the data that we saved.

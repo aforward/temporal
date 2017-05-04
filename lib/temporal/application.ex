@@ -7,6 +7,7 @@ defmodule Temporal.Application do
     import Supervisor.Spec, warn: false
 
     children = [
+      worker(Temporal.Worker, [])
     ]
 
     opts = [strategy: :one_for_one, name: Temporal.Supervisor]
