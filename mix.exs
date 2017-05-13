@@ -1,25 +1,58 @@
 defmodule Temporal.Mixfile do
   use Mix.Project
 
+  @name    :temporal
+  @friendly_name "Temporal"
+  @description "A library to download documents from the interwebs."
+  @version "0.1.1"
+  @git_url "https://github.com/aforward/temporal"
+  @home_url @git_url
+
+  @deps [
+    {:mix_test_watch, github: "aforward/mix-test.watch", only: :dev, runtime: false},
+    {:httpoison, "~> 0.11.1"},
+    {:poison, "~> 3.1.0"},
+    {:ex_doc, ">= 0.0.0", only: :dev},
+  ]
+
+  @aliases [
+  ]
+
+  @package [
+    name: @name,
+    files: ["lib", "mix.exs", "README*", "LICENSE*"],
+    maintainers: ["Andrew Forward"],
+    licenses: ["MIT"],
+    links: %{"GitHub" => @git_url}
+  ]
+
+  # ------------------------------------------------------------
+
   def project do
-    [app: :temporal,
-     version: "0.1.0",
-     elixir: "~> 1.4",
-     build_embedded: Mix.env == :prod,
-     start_permanent: Mix.env == :prod,
-     deps: deps()]
+    in_production = Mix.env == :prod
+    [
+      app:     @name,
+      version: @version,
+      name:    @friendly_name,
+      description: @description,
+      elixir:  ">= 1.4.2",
+      deps:    @deps,
+      aliases: @aliases,
+      package: @package,
+      source_url: @git_url,
+      homepage_url: @home_url,
+      build_embedded:  in_production,
+      start_permanent: in_production,
+    ]
   end
 
   def application do
-    [extra_applications: [:logger],
-     mod: {Temporal.Application, []}]
-  end
-
-  defp deps do
     [
-      {:mix_test_watch, github: "aforward/mix-test.watch", only: :dev, runtime: false},
-      {:httpoison, "~> 0.11.1"},
-      {:poison, "~> 3.1.0"},
+      mod: { Temporal.Application, [] },
+      extra_applications: [
+        :logger
+      ],
     ]
   end
+
 end

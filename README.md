@@ -1,6 +1,6 @@
 # Temporal
 
-**TODO: Add description**
+A library to download documents from the interwebs.
 
 ## Installation
 

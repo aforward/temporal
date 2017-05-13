@@ -3,7 +3,7 @@ defmodule Temporal.Api do
   Download files from the interweb
   """
 
-  @doc """
+  @doc"""
   Retrieve data from the interwebs using either :get or :post
 
   ## Examples
@@ -20,7 +20,7 @@ defmodule Temporal.Api do
   def call(:post, %{source: source, body: body}), do: post(source, body)
   def call(:post, %{source: source}), do: post(source)
 
-  @doc """
+  @doc"""
   Download a particular file using GET.  Optionally provide any required headers
 
   ## Examples
@@ -45,7 +45,7 @@ defmodule Temporal.Api do
     |> parse
   end
 
-  @doc """
+  @doc"""
   Download a particular file using POST.  Optionally provide any required data and headers
 
   Sorry, the examples suck and only show the :error case.
