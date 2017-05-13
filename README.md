@@ -38,3 +38,24 @@ Temporal.download_now(
     source: "https://example.com/myfile.txt",
     method: :get})
 ```
+
+If you want to schedule the download, say every hour, then call
+
+```elixir
+Temporal.schedule_now(
+  %{basedir: "/tmp",
+    frequency: :hourly,
+    source: "https://raw.githubusercontent.com/aforward/webfiles/master/x.txt",
+    method: :get})
+```
+
+If you want to schedule the download, say every hour, but you do not
+need to wait for the actual down, then change the call to `schedule_later`
+
+```elixir
+Temporal.schedule_later(
+  %{basedir: "/tmp",
+    frequency: :hourly,
+    source: "https://example.com/myfile.txt",
+    method: :get})
+```
