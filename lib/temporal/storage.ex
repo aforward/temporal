@@ -104,6 +104,9 @@ defmodule Temporal.Storage do
       iex> Temporal.Storage.path("http://download.finance.yahoo.com/d/quotes.csv?s=T.TO&f=sod1ax")
       "download.finance.yahoo.com/d/quotes.csv/query__s_eq_t.to_and_f_eq_sod1ax"
 
+      iex> Temporal.Storage.path("/tmp/", :once, "https://my.a4word.com/webfiles/x.txt")
+      "/tmp/my.a4word.com/webfiles/x.txt"
+
       iex> Temporal.Storage.path("/tmp/", "2017", "https://my.a4word.com/webfiles/x.txt")
       "/tmp/2017/my.a4word.com/webfiles/x.txt"
 
@@ -115,7 +118,7 @@ defmodule Temporal.Storage do
     path(basedir, timestamp(frequency), source)
   end
   def path(basedir, ts, source) when is_binary(ts) do
-    "#{basedir}/#{ts}/#{path(source)}" |> clean
+    "#{basedir}/#{ts}/#{path(source)}" |> clean |> clean
   end
   def path(source) do
     %URI{path: path,
@@ -144,8 +147,12 @@ defmodule Temporal.Storage do
     iex> Temporal.Storage.timestamp(~N[2016-05-09 13:26:08.003], :hourly)
     "2016050913"
 
+    iex> Temporal.Storage.timestamp(~N[2016-05-09 13:26:08.003], :once)
+    ""
+
   """
   def timestamp(frequency), do: NaiveDateTime.utc_now() |> timestamp(frequency)
+  def timestamp(_date, :once), do: ""
   def timestamp(date, :yearly), do: "#{date.year}"
   def timestamp(date, :monthly), do: "#{timestamp(date, :yearly)}#{pad(date.month,"00")}"
   def timestamp(date, :daily), do: "#{timestamp(date, :monthly)}#{pad(date.day,"00")}"
