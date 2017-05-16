@@ -62,7 +62,7 @@ If you want to schedule the download, say every hour, then call
 Temporal.schedule_now(
   %{basedir: "/tmp",
     frequency: :hourly,
-    source: "https://raw.githubusercontent.com/aforward/webfiles/master/x.txt",
+    source: "https://example.com/myfile.txt",
     method: :get})
 ```
 
@@ -76,3 +76,16 @@ Temporal.schedule_later(
     source: "https://example.com/myfile.txt",
     method: :get})
 ```
+
+Finally, if you want to me notified when a new file has been downloaded, then
+you can register callback functions
+
+```elixir
+Temporal.Callback.register(
+  fn(params, fname) ->
+    IO.puts("NEW FILE DOWNLOADED")
+    IO.inspect(params)
+    IO.puts("called #{fname}")
+  end)
+```
+

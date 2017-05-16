@@ -9,6 +9,7 @@ defmodule Temporal.Application do
     children = [
       worker(Temporal.Downloader, []),
       worker(Temporal.Scheduler, []),
+      worker(Temporal.Callback, []),
     ]
 
     opts = [strategy: :one_for_one, name: Temporal.Supervisor]
