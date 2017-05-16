@@ -1,1 +1,1 @@
-alias Temporal.{Fetch,Storage,Api,Application}
+alias Temporal.{Fetch,Storage,Api}

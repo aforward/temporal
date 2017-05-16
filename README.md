@@ -16,6 +16,23 @@ end
 Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
 and is published at [https://hexdocs.pm/temporal](https://hexdocs.pm/temporal).
 
+## Configuration
+
+You can configure the following defaults.
+
+```elixir
+config :temporal,
+  basedir: "/tmp",
+  frequency: :daily,
+  method: :get,
+  force: false
+```
+
+The default values are shown above, so only if you don't trust they
+will remain that way, or if you want something different should
+you add the configuration to your application.
+are shown below
+
 ## Usage
 
 If you want to download a file then you can run

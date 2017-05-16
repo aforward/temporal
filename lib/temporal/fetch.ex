@@ -74,6 +74,10 @@ defmodule Temporal.Fetch do
     |> Temporal.Storage.save(basedir, frequency, source)
   end
 
-  defp default_opts(), do: %{basedir: "/tmp", frequency: :daily, method: :get, force: false}
-
+  def default_opts() do
+    %{basedir:  Application.get_env(:temporal, :basedir, "/tmp"),
+      frequency: Application.get_env(:temporal, :frequency, :daily),
+      method: Application.get_env(:temporal, :method, :get),
+      force: Application.get_env(:temporal, :force, false)}
+  end
 end
