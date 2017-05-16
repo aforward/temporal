@@ -21,9 +21,9 @@ defmodule Temporal.Scheduler do
   end
 
   def handle_call({:schedule, params}, _from, state) do
-    {new_num, new_schedules} = update_state(params, state)
+    new_state = update_state(params, state)
     process_work(params)
-    {:reply, new_num, new_schedules}
+    {:reply, elem(new_state, 0), new_state}
   end
 
   def handle_cast({:schedule, params}, state) do
@@ -44,6 +44,7 @@ defmodule Temporal.Scheduler do
     Process.send_after(self(), :work, 11 * 60 * 1000) # 11 minutes
   end
 
+  defp update_state({:error, :timeout}, state), do: state
   defp update_state(schedule, {num, schedules}), do: {num + 1, [schedule | schedules]}
 
   defp zero_state, do: {0, []}
