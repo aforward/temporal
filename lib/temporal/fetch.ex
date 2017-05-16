@@ -21,7 +21,8 @@ defmodule Temporal.Fetch do
 
     filename
   end
-  def touch(args), do: default_opts() |> Map.merge(args) |> touch
+
+  def touch(args), do: args |> Temporal.normalize |> touch
 
   @doc"""
   Clean up a possible fetched file
@@ -40,7 +41,7 @@ defmodule Temporal.Fetch do
     filename |> File.rm
     filename
   end
-  def clean(args), do: default_opts() |> Map.merge(args) |> clean
+  def clean(args), do: args |> Temporal.normalize |> clean
 
   @doc"""
   Go and fetch the data if it's time, using the provided method.
@@ -67,17 +68,11 @@ defmodule Temporal.Fetch do
       true -> download(args)
     end
   end
-  def go(args), do: default_opts() |> Map.merge(args) |> go
+  def go(args), do: args |> Temporal.normalize |> go
 
   defp download(%{basedir: basedir,frequency: frequency, source: source, method: method} = args) do
     Temporal.Api.call(method, args)
     |> Temporal.Storage.save(basedir, frequency, source)
   end
 
-  def default_opts() do
-    %{basedir:  Application.get_env(:temporal, :basedir, "/tmp"),
-      frequency: Application.get_env(:temporal, :frequency, :daily),
-      method: Application.get_env(:temporal, :method, :get),
-      force: Application.get_env(:temporal, :force, false)}
-  end
 end

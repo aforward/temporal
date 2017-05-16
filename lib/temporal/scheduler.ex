@@ -10,8 +10,8 @@ defmodule Temporal.Scheduler do
     {:ok, _pid} = GS.start_link(__MODULE__, [], name: __MODULE__)
   end
 
-  def now(params), do: GS.call(W, {:schedule, params})
-  def later(params), do: GS.cast(W, {:schedule, params})
+  def now(params), do: GS.call(W, {:schedule, params |> Temporal.normalize})
+  def later(params), do: GS.cast(W, {:schedule, params |> Temporal.normalize})
 
   ### Server Callbacks
 
