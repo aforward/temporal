@@ -9,7 +9,7 @@ by adding `temporal` to your list of dependencies in `mix.exs`:
 
 ```elixir
 @deps [
-  {:temporal, "~> 0.2.0"}
+  {:temporal, "~> 0.2.1"}
 ]
 ```
 
