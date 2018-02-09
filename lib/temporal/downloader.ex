@@ -46,7 +46,7 @@ defmodule Temporal.Downloader do
 
   defp download(params, state) do
     params
-    |> Temporal.Fetch.go
+    |> Temporal.Fetch.go()
     |> update_state(params, state)
   end
 
@@ -54,8 +54,8 @@ defmodule Temporal.Downloader do
     Temporal.Callback.callback(params, file)
     {file, [file | old_state]}
   end
+
   defp update_state({:skip, file}, _params, state), do: {file, state}
 
   defp zero_state, do: []
-
 end

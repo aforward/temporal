@@ -1,7 +1,7 @@
 defmodule Temporal.Mixfile do
   use Mix.Project
 
-  @name    :temporal
+  @name :temporal
   @friendly_name "Temporal"
   @description "A library to download documents from the interwebs."
   @version "0.1.5"
@@ -12,11 +12,10 @@ defmodule Temporal.Mixfile do
     {:mix_test_watch, github: "aforward/mix-test.watch", only: :dev, runtime: false},
     {:httpoison, "~> 0.11.1"},
     {:jason, "~> 1.0"},
-    {:ex_doc, ">= 0.0.0", only: :dev},
+    {:ex_doc, ">= 0.0.0", only: :dev}
   ]
 
-  @aliases [
-  ]
+  @aliases []
 
   @package [
     name: @name,
@@ -29,30 +28,30 @@ defmodule Temporal.Mixfile do
   # ------------------------------------------------------------
 
   def project do
-    in_production = Mix.env == :prod
+    in_production = Mix.env() == :prod
+
     [
-      app:     @name,
+      app: @name,
       version: @version,
-      name:    @friendly_name,
+      name: @friendly_name,
       description: @description,
-      elixir:  ">= 1.6.0",
-      deps:    @deps,
+      elixir: ">= 1.6.0",
+      deps: @deps,
       aliases: @aliases,
       package: @package,
       source_url: @git_url,
       homepage_url: @home_url,
-      build_embedded:  in_production,
-      start_permanent: in_production,
+      build_embedded: in_production,
+      start_permanent: in_production
     ]
   end
 
   def application do
     [
-      mod: { Temporal.Application, [] },
+      mod: {Temporal.Application, []},
       extra_applications: [
         :logger
-      ],
+      ]
     ]
   end
-
 end

@@ -1,5 +1,4 @@
 defmodule Temporal.DownloaderTest do
-
   use ExUnit.Case
   doctest Temporal.Downloader
   alias Temporal.Downloader
@@ -9,7 +8,7 @@ defmodule Temporal.DownloaderTest do
 
   test "clear" do
     Downloader.clear()
-    assert [] == Downloader.files
+    assert [] == Downloader.files()
     Downloader.now(%{source: @url, frequency: :once, force: true})
     assert [@local] == Downloader.files()
   end
@@ -24,5 +23,4 @@ defmodule Temporal.DownloaderTest do
     :timer.sleep(1000)
     assert [@local] == Downloader.files()
   end
-
 end

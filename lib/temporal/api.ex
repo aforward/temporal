@@ -1,9 +1,9 @@
 defmodule Temporal.Api do
-  @moduledoc"""
+  @moduledoc """
   Download files from the interweb
   """
 
-  @doc"""
+  @doc """
   Retrieve data from the interwebs using either :get or :post
 
   ## Examples
@@ -16,11 +16,14 @@ defmodule Temporal.Api do
   """
   def call(:get, %{source: source, headers: headers}), do: get(source, headers)
   def call(:get, %{source: source}), do: get(source)
-  def call(:post, %{source: source, body: body, headers: headers}), do: post(source, body, headers)
+
+  def call(:post, %{source: source, body: body, headers: headers}),
+    do: post(source, body, headers)
+
   def call(:post, %{source: source, body: body}), do: post(source, body)
   def call(:post, %{source: source}), do: post(source)
 
-  @doc"""
+  @doc """
   Download a particular file using GET.  Optionally provide any required headers
 
   ## Examples
@@ -39,13 +42,14 @@ defmodule Temporal.Api do
 
   """
   def get(source), do: get(source, nil)
+
   def get(source, headers) do
     source
     |> HTTPoison.get(encode_headers(headers))
     |> parse
   end
 
-  @doc"""
+  @doc """
   Download a particular file using POST.  Optionally provide any required data and headers
 
   Sorry, the examples suck and only show the :error case.
@@ -67,16 +71,17 @@ defmodule Temporal.Api do
   """
   def post(source), do: post(source, %{}, %{})
   def post(source, body), do: post(source, body, %{})
+
   def post(source, body, headers) do
     source
     |> HTTPoison.post(
-         encode_body(headers[:body_type] || headers[:content_type], body),
-         encode_headers(headers)
-       )
+      encode_body(headers[:body_type] || headers[:content_type], body),
+      encode_headers(headers)
+    )
     |> parse
   end
 
-  @doc"""
+  @doc """
   Encode the provided hash map for the URL.
 
   ## Examples
@@ -103,7 +108,7 @@ defmodule Temporal.Api do
   def encode_body("application/json", map), do: Jason.encode!(map)
   def encode_body(_, map), do: encode_body(nil, map)
 
-  @doc"""
+  @doc """
   Build the headers for your API
 
   ## Examples
@@ -126,12 +131,14 @@ defmodule Temporal.Api do
   """
   def encode_headers(), do: encode_headers(%{})
   def encode_headers(nil), do: encode_headers(%{})
+
   def encode_headers(data) do
     data
     |> reject_nil
     |> Enum.map(&header/1)
     |> Enum.reject(&is_nil/1)
   end
+
   defp header({:bearer, bearer}), do: {"Authorization", "Bearer #{bearer}"}
   defp header({:content_type, content_type}), do: {"Content-Type", content_type}
   defp header({:body_type, _}), do: nil
@@ -139,17 +146,18 @@ defmodule Temporal.Api do
   defp parse({:ok, %HTTPoison.Response{body: body, status_code: 200}}) do
     {:ok, body}
   end
+
   defp parse({:ok, %HTTPoison.Response{status_code: code}}) do
     {:error, "Expected a 200, received #{code}"}
   end
+
   defp parse({:error, %HTTPoison.Error{reason: reason}}) do
     {:error, reason}
   end
 
   defp reject_nil(map) do
     map
-    |> Enum.reject(fn{_k,v} -> v == nil end)
+    |> Enum.reject(fn {_k, v} -> v == nil end)
     |> Enum.into(%{})
   end
-
 end

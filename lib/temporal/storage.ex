@@ -1,9 +1,9 @@
 defmodule Temporal.Storage do
-  @moduledoc"""
+  @moduledoc """
   Save and retrieve downloaded data from third party APIs
   """
 
-  @doc"""
+  @doc """
   Save the data that was fetched from the interwebs.
   You can either provide the path directly, or use the
   combination of `basedir`, `frequency` and `source` to
@@ -21,22 +21,24 @@ defmodule Temporal.Storage do
   def save(response, basedir, frequency, source) do
     save(response, path(basedir, frequency, source))
   end
+
   def save({:ok, body}, path) do
     mkdir(path)
     :ok = File.write!(path, body)
     {:ok, path}
   end
+
   def save(err, _path), do: err
 
-  @doc"""
+  @doc """
   Ensure the directory is available for saving
   """
   def mkdir(filename) do
-    filename |> Path.dirname |> File.mkdir_p
+    filename |> Path.dirname() |> File.mkdir_p()
     filename
   end
 
-  @doc"""
+  @doc """
   Retrieve data the data that we saved.
   You can either provide the path directly, or use the
   combination of `basedir`, `frequency` and `source` to
@@ -54,11 +56,12 @@ defmodule Temporal.Storage do
   def get(basedir, frequency, source) do
     path(basedir, frequency, source) |> get
   end
+
   def get(path) do
     File.read(path)
   end
 
-  @doc"""
+  @doc """
   Has the data been saved yet?
   You can either provide the path directly, or use the
   combination of `basedir`, `frequency` and `source` to
@@ -74,13 +77,14 @@ defmodule Temporal.Storage do
 
   """
   def exists?(basedir, frequency, source) do
-     path(basedir, frequency, source) |> exists?
+    path(basedir, frequency, source) |> exists?
   end
+
   def exists?(path) do
     File.exists?(path)
   end
 
-  @doc"""
+  @doc """
   Calculate a unique path for the source being fetched.  If you
   provide a basedir it will use that as a prefix.
 
@@ -117,20 +121,19 @@ defmodule Temporal.Storage do
   def path(basedir, frequency, source) when is_atom(frequency) do
     path(basedir, timestamp(frequency), source)
   end
+
   def path(basedir, ts, source) when is_binary(ts) do
     "#{basedir}/#{ts}/#{path(source)}" |> clean |> clean
   end
+
   def path(source) do
-    %URI{path: path,
-         query: query,
-         fragment: _,
-         host: host,
-         port: _} = URI.parse(source)
+    %URI{path: path, query: query, fragment: _, host: host, port: _} = URI.parse(source)
+
     "#{host}#{path}#{query_encode(query)}"
     |> clean
   end
 
-  @doc"""
+  @doc """
   Determine if it's time to perform your operation.
 
   ## Examples
@@ -154,21 +157,21 @@ defmodule Temporal.Storage do
   def timestamp(frequency), do: NaiveDateTime.utc_now() |> timestamp(frequency)
   def timestamp(_date, :once), do: ""
   def timestamp(date, :yearly), do: "#{date.year}"
-  def timestamp(date, :monthly), do: "#{timestamp(date, :yearly)}#{pad(date.month,"00")}"
-  def timestamp(date, :daily), do: "#{timestamp(date, :monthly)}#{pad(date.day,"00")}"
-  def timestamp(date, :hourly), do: "#{timestamp(date, :daily)}#{pad(date.hour,"00")}"
+  def timestamp(date, :monthly), do: "#{timestamp(date, :yearly)}#{pad(date.month, "00")}"
+  def timestamp(date, :daily), do: "#{timestamp(date, :monthly)}#{pad(date.day, "00")}"
+  def timestamp(date, :hourly), do: "#{timestamp(date, :daily)}#{pad(date.hour, "00")}"
 
   defp pad(num, zeros) do
     String.pad_leading("#{num}", String.length(zeros), zeros)
   end
 
   defp query_encode(nil), do: ""
+
   defp query_encode(q) do
     "/query__#{q}"
     |> String.replace("=", "_eq_")
     |> String.replace("&", "_and_")
   end
 
-  defp clean(path), do: path |> String.downcase |> String.replace("//", "/")
-
+  defp clean(path), do: path |> String.downcase() |> String.replace("//", "/")
 end

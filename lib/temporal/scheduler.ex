@@ -10,8 +10,8 @@ defmodule Temporal.Scheduler do
     {:ok, _pid} = GS.start_link(__MODULE__, [], name: __MODULE__)
   end
 
-  def now(params), do: GS.call(W, {:schedule, params |> Temporal.normalize})
-  def later(params), do: GS.cast(W, {:schedule, params |> Temporal.normalize})
+  def now(params), do: GS.call(W, {:schedule, params |> Temporal.normalize()})
+  def later(params), do: GS.cast(W, {:schedule, params |> Temporal.normalize()})
 
   ### Server Callbacks
 
@@ -34,6 +34,7 @@ defmodule Temporal.Scheduler do
     state
     |> elem(1)
     |> process_work
+
     {:noreply, state}
   end
 
@@ -41,12 +42,12 @@ defmodule Temporal.Scheduler do
   defp process_work(schedule) when is_map(schedule), do: Temporal.Downloader.now(schedule)
 
   defp schedule_work() do
-    Process.send_after(self(), :work, 11 * 60 * 1000) # 11 minutes
+    # 11 minutes
+    Process.send_after(self(), :work, 11 * 60 * 1000)
   end
 
   defp update_state({:error, :timeout}, state), do: state
   defp update_state(schedule, {num, schedules}), do: {num + 1, [schedule | schedules]}
 
   defp zero_state, do: {0, []}
-
 end

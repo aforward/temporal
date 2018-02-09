@@ -29,10 +29,9 @@ defmodule Temporal.Callback do
   end
 
   def handle_cast({:callback, params, filename}, state) do
-    Enum.each(state, fn(fun) -> fun.(params, filename) end)
+    Enum.each(state, fn fun -> fun.(params, filename) end)
     {:noreply, state}
   end
 
   defp zero_state, do: []
-
 end

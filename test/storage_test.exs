@@ -23,5 +23,4 @@ defmodule Temporal.StorageTest do
     assert {:ok, p} == Storage.save({:ok, "apples"}, "/tmp", :yearly, "https://example.com/x.txt")
     assert {:ok, "apples"} == Storage.get("/tmp", :yearly, "https://example.com/x.txt")
   end
-
 end

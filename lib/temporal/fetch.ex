@@ -1,6 +1,5 @@
 defmodule Temporal.Fetch do
-
-  @doc"""
+  @doc """
   Touch a file, useful if you want to "skip" a download
 
   ## Examples
@@ -17,14 +16,14 @@ defmodule Temporal.Fetch do
 
     filename
     |> Temporal.Storage.mkdir()
-    |> File.touch
+    |> File.touch()
 
     filename
   end
 
-  def touch(args), do: args |> Temporal.normalize |> touch
+  def touch(args), do: args |> Temporal.normalize() |> touch
 
-  @doc"""
+  @doc """
   Clean up a possible fetched file
 
   ## Examples
@@ -38,12 +37,13 @@ defmodule Temporal.Fetch do
   """
   def clean(%{basedir: basedir, frequency: frequency, source: source}) do
     filename = Temporal.Storage.path(basedir, frequency, source)
-    filename |> File.rm
+    filename |> File.rm()
     filename
   end
-  def clean(args), do: args |> Temporal.normalize |> clean
 
-  @doc"""
+  def clean(args), do: args |> Temporal.normalize() |> clean
+
+  @doc """
   Go and fetch the data if it's time, using the provided method.
 
       iex> Temporal.Fetch.clean(%{source: "https://raw.githubusercontent.com/aforward/webfiles/master/x.txt"})
@@ -57,22 +57,26 @@ defmodule Temporal.Fetch do
       {:ok, "/tmp/20170504/raw.githubusercontent.com/aforward/webfiles/master/x.txt"}
 
   """
-  def go(%{basedir: basedir,
-           frequency: frequency,
-           source: source,
-           method: _method,
-           force: force} = args) do
+  def go(
+        %{basedir: basedir, frequency: frequency, source: source, method: _method, force: force} =
+          args
+      ) do
     cond do
-      force -> download(args)
-      Temporal.Storage.exists?(basedir, frequency, source) -> {:skip, Temporal.Storage.path(basedir, frequency, source)}
-      true -> download(args)
+      force ->
+        download(args)
+
+      Temporal.Storage.exists?(basedir, frequency, source) ->
+        {:skip, Temporal.Storage.path(basedir, frequency, source)}
+
+      true ->
+        download(args)
     end
   end
-  def go(args), do: args |> Temporal.normalize |> go
 
-  defp download(%{basedir: basedir,frequency: frequency, source: source, method: method} = args) do
+  def go(args), do: args |> Temporal.normalize() |> go
+
+  defp download(%{basedir: basedir, frequency: frequency, source: source, method: method} = args) do
     Temporal.Api.call(method, args)
     |> Temporal.Storage.save(basedir, frequency, source)
   end
-
 end

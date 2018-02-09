@@ -1,5 +1,5 @@
 defmodule Temporal do
-  @moduledoc"""
+  @moduledoc """
   Documentation for Temporal.
   """
   defdelegate files, to: Temporal.Downloader
@@ -10,11 +10,13 @@ defmodule Temporal do
   defdelegate schedule_later(params), to: Temporal.Scheduler, as: :later
 
   def normalize(params), do: default_opts() |> Map.merge(params)
+
   def default_opts() do
-    %{basedir:  Application.get_env(:temporal, :basedir, "/tmp"),
+    %{
+      basedir: Application.get_env(:temporal, :basedir, "/tmp"),
       frequency: Application.get_env(:temporal, :frequency, :daily),
       method: Application.get_env(:temporal, :method, :get),
-      force: Application.get_env(:temporal, :force, false)}
+      force: Application.get_env(:temporal, :force, false)
+    }
   end
-
 end
