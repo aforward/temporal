@@ -100,7 +100,7 @@ defmodule Temporal.Api do
   def encode_body(map), do: encode_body(nil, map)
   def encode_body(nil, map), do: encode_body("application/x-www-form-urlencoded", map)
   def encode_body("application/x-www-form-urlencoded", map), do: URI.encode_query(map)
-  def encode_body("application/json", map), do: Poison.encode!(map)
+  def encode_body("application/json", map), do: Jason.encode!(map)
   def encode_body(_, map), do: encode_body(nil, map)
 
   @doc"""

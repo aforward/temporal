@@ -11,7 +11,7 @@ defmodule Temporal.Mixfile do
   @deps [
     {:mix_test_watch, github: "aforward/mix-test.watch", only: :dev, runtime: false},
     {:httpoison, "~> 0.11.1"},
-    {:poison, "~> 3.1.0"},
+    {:jason, "~> 1.0"},
     {:ex_doc, ">= 0.0.0", only: :dev},
   ]
 
@@ -35,7 +35,7 @@ defmodule Temporal.Mixfile do
       version: @version,
       name:    @friendly_name,
       description: @description,
-      elixir:  ">= 1.4.2",
+      elixir:  ">= 1.6.0",
       deps:    @deps,
       aliases: @aliases,
       package: @package,
