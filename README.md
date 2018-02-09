@@ -8,9 +8,9 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
 by adding `temporal` to your list of dependencies in `mix.exs`:
 
 ```elixir
-def deps do
-  [{:temporal, "~> 0.1.1"}]
-end
+@deps [
+  {:temporal, "~> 0.2.0"}
+]
 ```
 
 Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
