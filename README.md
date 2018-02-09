@@ -77,7 +77,7 @@ Temporal.schedule_later(
     method: :get})
 ```
 
-Finally, if you want to me notified when a new file has been downloaded, then
+Finally, if you want to be notified when a new file has been downloaded, then
 you can register callback functions
 
 ```elixir
@@ -88,4 +88,12 @@ Temporal.Callback.register(
     IO.puts("called #{fname}")
   end)
 ```
+
+Let's say you had a function (e.g. `process`) within your module, that conforms to the
+callback signature, then you can register it directly with
+
+```elixir
+Temporal.Callback.register(&process/2)
+```
+
 
