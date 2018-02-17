@@ -4,7 +4,7 @@ defmodule Temporal.Mixfile do
   @name :temporal
   @friendly_name "Temporal"
   @description "A library to download documents from the interwebs."
-  @version "0.2.2"
+  @version "0.3.0"
   @git_url "https://github.com/aforward/temporal"
   @home_url @git_url
 
