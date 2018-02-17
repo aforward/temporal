@@ -10,7 +10,7 @@ defmodule Temporal.Mixfile do
 
   @deps [
     {:mix_test_watch, github: "aforward/mix-test.watch", only: :dev, runtime: false},
-    {:httpoison, "~> 0.11.1"},
+    {:httpoison, "~> 1.0"},
     {:jason, "~> 1.0"},
     {:ex_doc, ">= 0.0.0", only: :dev},
     {:version_tasks, "~> 0.11.1"},
